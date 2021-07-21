@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Room Detail</title>
+  <style>
+    .map {
+      width: 700px;
+      height: 700px;
+      background-color: #CCC;
+      position: relative;
+    }
+    .container {
+        display:flex;
+    }
+    
+    .client-list {
+        flex: 1;
+        height: 700px;
+        overflow: auto;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .center-in-center{   
+            position: absolute;   
+            top: 50%;   
+            left: 50%;   
+            -webkit-transform: translate(-50%, -50%);   
+            -moz-transform: translate(-50%, -50%);   
+            -ms-transform: translate(-50%, -50%);   
+            -o-transform: translate(-50%, -50%);   
+            transform: translate(-50%, -50%);   
+        } 
+  </style>
+  <link rel="stylesheet" href="public/css/bootstrap.css">
+</head>
+<body>
+    <div class="header container" >
+        <div class="page-header">
+            <h1 id="roomname">Test Room 1</h1>
+            <button id="mute">Mute</button>
+            <button id="3D">3D view</button>
+        </div>
+    </div>
+    
+    <div class="container">
+
+        <div class="map">
+
+        </div>
+        <div class="client-list">
+            <ul id="clients" style="list-style: none; margin-top: 10px;">
+            </ul>   
+        </div>
+
+    </div>
+
+    <script src="public/js/settings.js"></script>
+    <script src="public/js/room.js"></script>
+</body>
+</html>
