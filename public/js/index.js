@@ -76,16 +76,19 @@
         console.log('Websocket message.');
         var reader = new FileReader();
         reader.addEventListener("loadend", function() {
-            var message = JSON.parse(Message.toString(reader.result));
-            console.log(message);
+            var msg = Message.Wrap(reader.result);
+            if (JSON.stringify(msg.objectId) === JSON.stringify(networkId) && msg.componentId == 1) {
+                var message = JSON.parse(Message.toString(reader.result));
+                console.log(message);
 
-            switch(message.type){
-                case "Rooms":
-                    rooms = JSON.parse(message.args).rooms;
-                    updateRooms();
-                    break;
-                default:
-                    break;
+                switch(message.type){
+                    case "Rooms":
+                        rooms = JSON.parse(message.args).rooms;
+                        updateRooms();
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         reader.readAsArrayBuffer(e.data);

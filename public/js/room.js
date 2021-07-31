@@ -76,17 +76,20 @@
         console.log('Websocket message.');
         var reader = new FileReader();
         reader.addEventListener("loadend", function() {
-            var message = JSON.parse(Message.toString(reader.result));
-            console.log(message);
+            var msg = Message.Wrap(reader.result);
+            if (JSON.stringify(msg.objectId) === JSON.stringify(networkId) && msg.componentId == 1){
+                var message = JSON.parse(Message.toString(reader.result));
+                console.log(message);
 
-            switch(message.type){
-                case "Rejected":
-                    let reason = JSON.parse(message.args).reason;
-                    alert(reason);
-                    location.href = 'index.html';
-                    break;
-                default:
-                    break;
+                switch(message.type){
+                    case "Rejected":
+                        let reason = JSON.parse(message.args).reason;
+                        alert(reason);
+                        location.href = 'index.html';
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         reader.readAsArrayBuffer(e.data);
