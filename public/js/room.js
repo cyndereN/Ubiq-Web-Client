@@ -77,7 +77,7 @@
         var reader = new FileReader();
         reader.addEventListener("loadend", function() {
             var msg = Message.Wrap(reader.result);
-            if (JSON.stringify(msg.objectId) === JSON.stringify(networkId) && msg.componentId == 1){
+            if (NetworkId.Compare(msg.objectId, networkId) && msg.componentId == 1){
                 var message = JSON.parse(Message.toString(reader.result));
                 console.log(message);
 

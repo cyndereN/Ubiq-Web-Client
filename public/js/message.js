@@ -39,6 +39,10 @@
         return new NetworkId(id);
     }
 
+    NetworkId.Compare = function(x, y){
+        return(x.a == y.a && x.b == y.b);
+    }
+
     DataView.prototype.writeNetworkId = function(networkId, offset){
         NetworkId.WriteBuffer(networkId, this, offset);
     }
