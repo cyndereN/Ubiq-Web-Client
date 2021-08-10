@@ -41,7 +41,7 @@
 
     function handleJoinBtnClick() {
         joincode = oJoincode.value.trim().toLowerCase();
-        roomname = "Roomname";
+        roomname = "Private Room: " + joincode.toUpperCase();
         
         if (joincode.length != 3) {
             alert(`Please enter a 3-digit code!`);

@@ -1,8 +1,9 @@
 ;((doc) => {
     
-    function Player(x, y, uuid, color) {
+    function Player(x, y, objectId, uuid, color) {
         this.x = x; 
         this.y = y; 
+        this.objectId = objectId;
         this.uuid = uuid;
         this.color = color;
         this.elements = []; // store div on map
@@ -21,7 +22,7 @@
         div.style.top = 70*(5 - this.y) + "px";
         div.title = "(" + this.x + ", " + this.y + ")";
         this.elements.push(div);
-        console.log(this.uuid+" draw");
+        //console.log(this.uuid+" draw");
     }
     
     Player.prototype.addToList = function(list){
@@ -41,8 +42,9 @@
         txt.innerHTML = this.uuid;
         txt.style.padding = 30+"px";
         this.elements.push(li);
-        console.log(this.uuid+" add to list");
+        //console.log(this.uuid+" add to list");
     }
+    
     
     Player.prototype.removeElements = function() {
         for (var i = 0; i < this.elements.length; i++) {
@@ -50,7 +52,7 @@
             ele.parentNode.removeChild(ele);
         }
         
-        console.log(this.uuid+" remove");
+        //console.log(this.objectId+" remove");
     }
     
     Player.prototype.updateElements = function() {
@@ -82,15 +84,15 @@
         this.y = y;
         // Only changes the x, y position, not the position of divs.
         this.updateElements();
-        console.log(this.uuid+" update");
+        //console.log(this.objectId+" update");
     }
     
     
     
-    Player.prototype.isNewPlayer = function (playerUuid){
+    Player.isNewPlayer = function (players, playerobjectId){
         var flag = 1;
         for (const p of players) {
-            if (playerUuid == p.uuid) {
+            if (NetworkId.Compare(playerobjectId, p.objectId)) {
                 flag = 0;
             } 
         }
@@ -107,9 +109,9 @@
         }
     }
     
-    Player.updatePlayer = function(players, playerUuid, x, y){
+    Player.updatePlayer = function(players, playerobjectId, x, y){
         for (let i=0 ; i<players.length ; i++) {
-            if (playerUuid == players[i].uuid) {
+            if (NetworkId.Compare(playerobjectId, players[i].objectId)) {
                 players[i].update(x, y);
                 return;
             } 

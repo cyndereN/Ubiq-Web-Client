@@ -13,6 +13,8 @@
     let roomname;
     let networkId;
 
+    let players; // Store avatars 
+
     let sendPingTimer;
 
     const init = () => {
@@ -29,6 +31,7 @@
         uuid = storage.getItem('uuid');
         roomname = storage.getItem('roomname');
         networkId = new NetworkId.Unique();
+        players = [];
         console.log(joincode);
         console.log(uuid);
         console.log(roomname);
@@ -73,7 +76,7 @@
     }
 
     function handleMessage(e){
-        console.log('Websocket message.');
+        //console.log('Websocket message.');
         var reader = new FileReader();
         reader.addEventListener("loadend", function() {
             var msg = Message.Wrap(reader.result);
@@ -87,8 +90,51 @@
                         alert(reason);
                         location.href = 'index.html';
                         break;
+
+                    case "SetRoom":
+                        var peers = JSON.parse(message.args).peers;
+                        console.log(peers);
+                        for (let i=0 ; i<peers.length ; i++) { //The players taht are already in room
+                            var playerUuid = peers[i].uuid;
+                            
+                            if (playerUuid != uuid) {
+                                var playerobjectId = new NetworkId(peers[i].properties.values[0]);
+                                var newPlayer = new Player(0, 0, playerobjectId, playerUuid, getRandomColor());
+                                players.push(newPlayer);
+                                newPlayer.draw(oMap);
+                                newPlayer.addToList(oList);
+                            } 
+                        }
+                        break;
+
+
+                    case "UpdatePeer":
+                        var playerUuid = JSON.parse(message.args).uuid;
+                        
+                        if (playerUuid != uuid){
+                            var playerobjectId = new NetworkId(JSON.parse(message.args).properties.values[0]);
+                            var newPlayer = new Player(0, 0, playerobjectId, playerUuid, getRandomColor());
+                            players.push(newPlayer);
+                            newPlayer.draw(oMap);
+                            newPlayer.addToList(oList);
+                        }
+                        break;
+
+                    case "RemovedPeer":
+                        var playerUuid = JSON.parse(message.args).uuid;
+                        Player.deletePlayer(players, playerUuid);
+                        break;
+
                     default:
                         break;
+                }
+
+            } else {
+                if(msg.componentId == 4559){ // it is an avatar
+                    console.log(msg.message)
+                    var x = 1;
+                    var y = 1;
+                    Player.updatePlayer(players, msg.objectId,x,y);
                 }
             }
         });
@@ -163,6 +209,8 @@
             p.addToList(oList);
         });
     }
+
+    
 
     init();
 
