@@ -131,10 +131,11 @@
 
             } else {
                 if(msg.componentId == 4559){ // it is an avatar
-                    console.log(msg.message)
-                    var x = 1;
-                    var y = 1;
-                    Player.updatePlayer(players, msg.objectId,x,y);
+                    var buffer = msg.message;
+                    var view = new DataView(buffer);
+                    var x = view.getFloat32(21, true);
+                    var z = view.getFloat32(8, true);
+                    Player.updatePlayer(players, msg.objectId,x,z);
                 }
             }
         });
@@ -213,62 +214,6 @@
     
 
     init();
-
-    // ----------------------------------------------- test---------------------
-
-
-    // function sleep(ms) {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    // }
-
-    // async function demo() {
-    //     // console.log(players)
-    //     // console.log(players[0])
-    //     // console.log(players[1])
-    //     // console.log(players[2])
-    //     // console.log(isNewPlayer('3333-3333'));
-    //     // console.log(isNewPlayer('1333-3333'));
-    //     drawMap();
-    //     console.log('Taking a break...');
-    //     await sleep(2000);
-    //     console.log('Two second later');
-        
-    //     Player.updatePlayer(players,"5555-5555",5,-5.5);
-    //     // console.log(players)
-    //     // console.log(players[0])
-    //     // console.log(players[1])
-        
-    //     console.log('Taking a break...');
-    //     await sleep(2000);
-    //     console.log('Two second later');
-    //     Player.updatePlayer(players,"3333-3333",1,-1.5);
-    //     Player.updatePlayer(players,"5555-5555",5,-5);
-    //     // console.log(players[0])
-    //     console.log('Taking a break...');
-    //     await sleep(2000);
-    //     console.log('Two second later');
-    //     Player.updatePlayer(players,"3333-3333",1,-2);
-    //     Player.deletePlayer(players,"5555-5555");
-    // }
-
-
-    
-    // var players = [];
-    // var newPlayer = new Player(0,0,"1111-1111",getRandomColor())
-    // players.push(newPlayer)
-    // var newPlayer = new Player(1,1,"2222-2222",getRandomColor())
-    // players.push(newPlayer)
-    // var newPlayer = new Player(1,-1,"3333-3333",getRandomColor())
-    // players.push(newPlayer)
-    // var newPlayer = new Player(-5,5,"4444-4444",getRandomColor())
-    // players.push(newPlayer)
-    // var newPlayer = new Player(5,-5,"5555-5555",getRandomColor())
-    // players.push(newPlayer)
-    // demo();
-    
-
-
-
 
     
 })(document, localStorage, location);
